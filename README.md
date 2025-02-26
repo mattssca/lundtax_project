@@ -10,7 +10,19 @@ This is a rough outline that will eb expanded upon as the project progresses. Ea
 
 Look into "all" available prepproccessing methods relating to RNA sequencing data. Possibly, check Elenas work for leads on where to look. One key point is to take notes of how the different preprocessing methods are different in terms of the returned data.
 
-> In this study, we have included the two datasets TCGA and UNC. For TCGA, we have implemented our algorithm on data preprocessed as described in this study. For the UNC data set, we have analyzed the data as we have it (look into what the steps are here also...)
+In this study, we have included the three datasets TCGA, UC Genome and Leeds. 
+
+#### TCGA (preprocessed)
+
+We have implemented our algorithm on data preprocessed as described in this study (Kallista and Salmon)
+
+#### UC Genome (raw)
+
+Original data obtained from the paper (raw)
+
+#### Leeds (Micro array)
+
+Array data from this publication
 
 ### Classification
 
