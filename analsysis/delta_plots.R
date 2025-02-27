@@ -78,20 +78,17 @@ plot_deltas <- function(these_predictions = NULL,
     return(prediction_scores)
   }
   
-  my_plot <- ggplot(prediction_scores, aes(x = reorder(sample_id, delta), y = delta, group = subtype, color = subtype)) +
+  my_plot <- ggplot(prediction_scores, aes(x = reorder(sample_id, -delta), y = delta, group = subtype, color = subtype)) +
     geom_line() +
     geom_point(size = 0.8) +
     scale_color_manual(values = my_palette) +
-    scale_y_reverse(expand = c(0, 0), limits = c(1, 0)) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 1), breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c("0.0", "0.25", "0.5", "0.75", "1.0")) +
     scale_x_discrete(expand = c(0, 0)) +
     labs(title = plot_title,
          x = "Samples",
          y = "Delta") +
-    theme(legend.position = c(0.85, 0.3), 
-          legend.background = element_rect(fill = alpha('white', 0.5)), 
-          axis.ticks.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.ticks.y = element_line(linewidth = 0.4),
+    theme(axis.ticks.x = element_blank(), 
+          axis.text.x = element_blank(), 
           panel.background = element_blank(),
           panel.grid.major = element_blank(),
           panel.grid.minor = element_blank(),
@@ -430,6 +427,11 @@ plot_wrapper(these_predictions = pred_uc_genome,
 
 plot_wrapper(these_predictions = pred_leeds, 
              plot_title = "leeds", 
-             out_path = "lundtax_project/out/figures/leeds/")  
+             out_path = "lundtax_project/out/figures/leeds/") 
 
+plot_wrapper(these_predictions = pred_uroscanseq_high_low_batch_fixed_grade_score, 
+             plot_title = "uroscanseq", 
+             out_path = "lundtax_project/out/figures/uroscanseq_ref/") 
+
+data = plot_deltas(these_predictions = pred_uroscanseq_high_low_batch_fixed_grade_score, return_data = TRUE, subtype_class = "5_class")
  
