@@ -103,17 +103,75 @@ plot_wrapper = function(these_predictions = NULL,
                         plot_title = NULL,
                         out_path = NULL){
   
-  class_5_plot = plot_deltas(these_predictions = these_predictions,
+  class_5_data = plot_deltas(these_predictions = these_predictions,
                              this_subtype = NULL,
                              subtype_class = "5_class",
                              plot_title = plot_title, 
-                             return_data = FALSE)
+                             return_data = TRUE)
+
+  class_5_data <- class_5_data %>%
+    group_by(subtype) %>%
+    arrange(desc(delta)) %>%
+    mutate(index = row_number()) %>%
+    ungroup()
   
-  class_7_plot = plot_deltas(these_predictions = these_predictions,
+  pdf(file = paste0(out_path, "delta_all_", plot_title, "_5_class.pdf"), width = 8, height = 7)
+  print(ggplot(class_5_data, aes(x = index, y = delta, group = subtype, color = subtype)) +
+    geom_line(linewidth = 0.8) +
+    geom_point(size = 2, shape = 20) +
+    scale_color_manual(values = lund_colors$lund_colors) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, 1), breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c("0.0", "0.25", "0.5", "0.75", "1.0")) +
+    scale_x_discrete(expand = c(0, 0)) +
+    labs(title = paste0(plot_title, " all_5_class"),
+           subtitle = "Delta Values For Class 5 Subtypes",
+         x = "Samples",
+         y = "Delta") +
+    theme_minimal() +
+    theme(axis.ticks.x = element_blank(), 
+          axis.text.x = element_blank(), 
+          panel.background = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          plot.background = element_blank(),
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.4),
+          axis.line.x = element_blank()))
+  dev.off()
+  
+  
+  class_7_data = plot_deltas(these_predictions = these_predictions,
                              this_subtype = NULL,
                              subtype_class = "7_class",
                              plot_title = plot_title, 
-                             return_data = FALSE)
+                             return_data = TRUE)
+  
+  # Sort the delta values within each subtype in descending order and assign an index
+  class_7_data <- class_7_data %>%
+    group_by(subtype) %>%
+    arrange(desc(delta)) %>%
+    mutate(index = row_number()) %>%
+    ungroup()
+  
+  pdf(file = paste0(out_path, "delta_all_", plot_title, "_7_class.pdf"), width = 8, height = 7)
+  print(ggplot(class_7_data, aes(x = index, y = delta, group = subtype, color = subtype)) +
+          geom_line(linewidth = 0.8) +
+          geom_point(size = 2, shape = 20) +
+          scale_color_manual(values = lund_colors$lund_colors) +
+          scale_y_continuous(expand = c(0, 0), limits = c(0, 1), breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c("0.0", "0.25", "0.5", "0.75", "1.0")) +
+          scale_x_discrete(expand = c(0, 0)) +
+          labs(title = paste0(plot_title, " all_7_class"),
+               subtitle = "Delta Values For Class 7 Subtypes",
+               x = "Samples",
+               y = "Delta") +
+          theme_minimal() +
+          theme(axis.ticks.x = element_blank(), 
+                axis.text.x = element_blank(), 
+                panel.background = element_blank(),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                plot.background = element_blank(),
+                panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.4),
+                axis.line.x = element_blank()))
+  dev.off()
   
   uro_plot = plot_deltas(these_predictions = these_predictions,
                          this_subtype = "Uro",
@@ -186,12 +244,6 @@ plot_wrapper = function(these_predictions = NULL,
   dev.off()
   pdf(file = paste0(out_path, "delta_", plot_title, "_uroc.pdf"), width = 8, height = 7)
   print(uroc_plot)
-  dev.off()
-  pdf(file = paste0(out_path, "delta_", plot_title, "_class_5.pdf"), width = 8, height = 7)
-  print(class_5_plot)
-  dev.off()
-  pdf(file = paste0(out_path, "delta_", plot_title, "_class_7.pdf"), width = 8, height = 7)
-  print(class_7_plot)
   dev.off()
   
   plot_data_5 = plot_deltas(these_predictions = these_predictions, 
