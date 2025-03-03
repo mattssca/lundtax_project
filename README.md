@@ -37,15 +37,19 @@ The main point here is to look into if the delta values are relted to the qualit
 3. Redo figures but in subtype dependent manner (5 Class).
 4. Repeat for 7 Class subtypes.
 
+---
+
+
+
 ### TODO
 
-* Do boxplot with delta values for Leeds.
-* Redo delta plot, line+dots for all samples (not split by subtype).
-* Set the lowest 50 samples and highlight in library size plot.
-* Redo heatmap with scaled scores, move put label on top and update colours.
-* Update the six-panel figure and match the point size in the last figure.
-* Work on the R package:
-  * Fix vignette.
-  * Run checks and documentation.
-  * Add function for preoducing reports.
-  * Start writing on the paper.
+* [X] Do boxplot with delta values for Leeds.
+* [X] Redo delta plot, line+dots for all samples (not split by subtype).
+* [X] Set the lowest 50 samples and highlight in library size plot.
+* [X] Redo heatmap with scaled scores, move put label on top and update colours.
+* [ ] Update the six-panel figure and match the point size in the last figure.
+* [ ] Work on the R package:
+  * [ ] Fix vignette.
+  * [ ] Run checks and documentation.
+  * [ ] Add function for preoducing reports.
+  * [ ] Start writing on the paper.
