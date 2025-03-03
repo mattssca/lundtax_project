@@ -14,7 +14,7 @@ In this study, we have included the three datasets TCGA, UC Genome and Leeds.
 
 #### TCGA (preprocessed)
 
-We have implemented our algorithm on data preprocessed as described in this study (Kallista and Salmon)
+We have implemented our algorithm on data preprocessed as described in this study (Salmon), refer to Elenas work showing that preprocessing doesn not matter much (Kallisto vs. Salmon)
 
 #### UC Genome (raw)
 
@@ -36,3 +36,16 @@ The main point here is to look into if the delta values are relted to the qualit
 2. Make the delta-graph seperatly for each dataset. The delta should be the highest prediction value for a subtype, compared to the next highest value, for another subtype.
 3. Redo figures but in subtype dependent manner (5 Class).
 4. Repeat for 7 Class subtypes.
+
+### TODO
+
+* Do boxplot with delta values for Leeds.
+* Redo delta plot, line+dots for all samples (not split by subtype).
+* Set the lowest 50 samples and highlight in library size plot.
+* Redo heatmap with scaled scores, move put label on top and update colours.
+* Update the six-panel figure and match the point size in the last figure.
+* Work on the R package:
+  * Fix vignette.
+  * Run checks and documentation.
+  * Add function for preoducing reports.
+  * Start writing on the paper.

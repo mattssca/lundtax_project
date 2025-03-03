@@ -1,9 +1,9 @@
 library(circlize)
 
-plot_data = plot_deltas(these_predictions = pred_tcga, 
-                        subtype_class = "5_class", 
-                        this_subtype = NULL,
-                        return_data = TRUE)
+  plot_data = plot_deltas(these_predictions = pred_tcga, 
+                          subtype_class = "5_class", 
+                          this_subtype = NULL,
+                          return_data = TRUE)
 
 summarized_data <- plot_data %>%
   group_by(subtype) %>%
