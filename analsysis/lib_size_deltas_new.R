@@ -3,7 +3,7 @@ spit_plots = function(these_predictions = NULL,
                       data_name = NULL, 
                       file_name = NULL){
   
-  class_5_data = plot_deltas(these_predictions = these_predictions,
+  class_5_data = plot_deltas(these_predictions = pred_leeds,
                              this_subtype = NULL,
                              subtype_class = "5_class",
                              return_data = TRUE)
@@ -228,19 +228,19 @@ spit_plots = function(these_predictions = NULL,
   }
 
 #run hepler
-spit_plots(these_predictions = pred_tcga, out_path = "../lundtax_project/out/figures/new_plots/fix/", data_name = "TCGA", file_name = "tcga")
-spit_plots(these_predictions = pred_uc_genome, out_path = "../lundtax_project/out/figures/new_plots/fix/", data_name = "UC Genome", file_name = "uc_genome")
-spit_plots(these_predictions = pred_leeds, out_path = "../lundtax_project/out/figures/new_plots/fix/", data_name = "Leeds", file_name = "leeds")
+spit_plots(these_predictions = pred_tcga, out_path = "../Desktop/tmp/", data_name = "TCGA", file_name = "tcga")
+spit_plots(these_predictions = pred_uc_genome, out_path = "../Desktop/tmp/", data_name = "UC Genome", file_name = "uc_genome")
+spit_plots(these_predictions = pred_leeds, out_path = "../Desktop/tmp/", data_name = "Leeds", file_name = "leeds")
 
 
 #TCGA analysis
-class_5_delta = plot_deltas(these_predictions = these_predictions,
+class_5_delta = plot_deltas(these_predictions = pred_tcga,
                             this_subtype = NULL,
                             subtype_class = "5_class",
                             return_data = TRUE)
 
 #sort the data by the delta column in ascending order
-class_5_delta <- class_5_data %>%
+class_5_delta <- class_5_delta %>%
   arrange(delta)
 
 #create a new column prediction_conf
@@ -248,22 +248,24 @@ class_5_delta <- class_5_delta %>%
   mutate(prediction_conf = ifelse(row_number() <= 50, "low_conf", "high_conf"))
 
 class_5_delta = class_5_delta %>% 
-  select(sample_id, prediction_conf, delta)
+  dplyr::select(sample_id, prediction_conf, delta)
 
 joined = tcga_lib_size %>% 
   left_join(class_5_delta, by = "sample_id")
 
 #plot library size
-library_size <- ggplot(joined, aes(x = reorder(sample_id, -library_size), y = library_size, group = prediction_conf, color = prediction_conf)) +
-  geom_point(size = 2, alpha = 0.7) +
-  scale_color_manual(values = c("low_conf" = "#F44A4A", "high_conf" = "black")) +
-  scale_y_continuous(breaks = seq(0, max(joined$library_size, na.rm = TRUE), by = 500)) +
+library_size <- ggplot(joined, aes(x = reorder(sample_id, -library_size), y = library_size, color = prediction_conf)) +
+  geom_point(aes(shape = prediction_conf), size = 2) +
+  scale_color_manual(values = c("low_conf" = "#F44A4A", "high_conf" = "grey")) +
+  scale_shape_manual(values = c("low_conf" = 16, "high_conf" = 16)) + 
   labs(title = paste0("TCGA", " 5 Class"),
        x = "Samples",
        y = "Library Size") +
   theme(axis.ticks.x = element_blank(), 
         axis.text.x = element_blank(), 
         axis.line.x = element_blank())
+
+print(library_size)
 
 # Set the threshold for library size
 threshold <- 45000
@@ -305,7 +307,7 @@ mean_delta_plot <- ggplot(mean_delta_df, aes(x = threshold, y = mean_delta, fill
   labs(title = "Mean Delta Above and Below Library Size Threshold",
        x = "Library Size Threshold",
        y = "Mean Delta") +
-  scale_fill_manual(values = c("Above Threshold" = "#4CAF50", "Below Threshold" = "#F44336")) +
+  scale_fill_manual(values = c("Above Threshold" = "#4CAF50", "Below Threshold" = "#F44A4A")) +
   theme_minimal()
 
 # Calculate the R-squared value
@@ -355,7 +357,6 @@ proportion_plot <- ggplot(proportion_data, aes(x = threshold_group, y = proporti
   theme_minimal()
 
 print(library_size)
-print(low_conf_plot)
 print(scatter_plot)
 print(low_conf_plot)
 print(mean_delta_plot)
