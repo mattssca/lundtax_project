@@ -21,9 +21,32 @@ library_size <- ggplot(joined, aes(x = reorder(sample_id, -library_size), y = li
   coord_cartesian(ylim = c(40000, NA)) +
   scale_y_continuous(breaks = seq(40000, max(joined$library_size, na.rm = TRUE), by = 1000))
 
+delta_size <- ggplot(joined, aes(x = reorder(sample_id, -delta), y = delta, group = 1)) +
+  geom_line(color = "black") +
+  geom_point(data = subset(joined, prediction_conf == "low_conf"), aes(fill = prediction_conf), color = "black", shape = 21, size = 2) +
+  scale_fill_manual(values = c("low_conf" = "#F44A4A"), labels = c("Delta < 0.2306")) +
+  labs(title = "Library Size Per Sample (TCGA)",
+       tag = "A",
+       subtitle = "Confounding Prediction-calls In Red (\u0394 \u2264 0.2306)",
+       x = "Samples",
+       y = "Library Size",
+       fill = "") +
+  theme_bw() +
+  theme(axis.ticks.x = element_blank(), 
+        axis.text.x = element_blank(), 
+        axis.line.x = element_blank(),
+        plot.tag = element_text(face = "bold"),
+        panel.grid.major.x = element_blank(), 
+        panel.grid.minor.x = element_blank(),
+        legend.position = "none", 
+        panel.grid.minor.y = element_blank()) +
+  coord_cartesian(ylim = c(0, NA)) +
+  scale_y_continuous(breaks = seq(0, max(joined$delta, na.rm = TRUE), by = 0.2))
+
+
 save(file = "../BIOINFORMATICS/lundtax_project/out/figures/new_plots/fix/plot_data/tcga_libsize_low_delta.Rdata", joined)
 
-pdf(file = "../BIOINFORMATICS/lundtax_project/out/figures/new_plots/fix/tcga_libsize_low_delta.pdf", width = 9, height = 7)
+pdf(file = "../BIOINFORMATICS/lundtax_project/out/figures/new_plots/fix/tcga_library_size_5_class.pdf", width = 9, height = 7)
 print(library_size)
 dev.off()
 
